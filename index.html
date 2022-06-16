@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>檔案上傳</title>
+</head>
+<script type="text/javascript" language="javascript">
+    function checkfile(sender) {
+        var fileinput, getfile, filename, subname;
+        var validExts = new Array(".pdf", ".txt");
+        filename = sender.value;
+        subname = filename.substring(filename.lastIndexOf('.'));
+
+        if(!window.FileReader){
+            alert("file API 不支援此瀏覽器");
+            return false;
+        }
+
+        fileinput = document.getElementById('fileinput');
+    
+        if(!fileinput) {
+            txtAppend("p", "找不到fileinput");
+        }else if(!fileinput.files){
+            txtAppend("p", "瀏覽器不支援 input 中的 file 元素");
+        }else if(!fileinput.files[0]){
+            txtAppend("p", "請先選擇檔案再點擊上傳");
+        }else{
+            getfile = fileinput.files[0];
+            console.log(getfile);
+            if(validExts.indexOf(subname) < 0){
+                alert("檔案類型錯誤，只允許上傳.pdf, .txt檔");
+                sender.value = null;
+                return false
+            }else if(getfile.size > 5242880){
+                alert("檔案過大，大小僅限5MB，請重新選擇檔案");
+                sender.value = null;
+                return false;
+            }
+            else return true;
+        }
+               
+    }
+</script>
+<body>
+    <div>
+        <div>
+            <h3>請上傳.pdf或txt檔</h3>
+            <h5>檔案大小上限5MB, 保留5分鐘</h5>
+            <input type="file" id="fileinput" onchange="checkfile(this)">
+            <input type="button" id="btnLoad">
+        </div>
+    </div>
+</body>
+
+</html>
